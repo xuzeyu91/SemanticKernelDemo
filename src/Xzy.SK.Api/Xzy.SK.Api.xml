@@ -4,14 +4,7 @@
         <name>Xzy.SK.Api</name>
     </assembly>
     <members>
-        <member name="M:Xzy.SK.Api.Controllers.MemoryStoreController.Save">
-            <summary>
-            保存向量
-            </summary>
-            <param name="input"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Xzy.SK.Api.Controllers.MemoryStoreController.Search(System.String)">
+        <member name="M:Xzy.SK.Api.Controllers.MemoryStoreController.MemoryStore(System.String)">
             <summary>
             查询向量
             </summary>

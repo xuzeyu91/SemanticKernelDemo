@@ -56,7 +56,7 @@ namespace Xzy.SK.Api.Controllers
             string result = "" ;
             await foreach (MemoryQueryResult memory in memories)
             {
-                result = $"Id:{memory.Metadata.Id},Description:{memory.Metadata.Description},Relevance：{memory.Relevance}";
+                result += $"Id:{memory.Metadata.Id},Description:{memory.Metadata.Description},Relevance：{memory.Relevance}\n" ;
             }
 
             return Ok(result);
