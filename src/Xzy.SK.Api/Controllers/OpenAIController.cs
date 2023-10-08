@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Xzy.SK.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class OpenAIController : ControllerBase
     {

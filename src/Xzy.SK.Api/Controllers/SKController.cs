@@ -15,7 +15,7 @@ using Xzy.SK.Api.plugins.MathPlugin;
 namespace Xzy.SK.Api.Controllers
 {
     /// <summary>
-    /// SK
+    /// SKDemo示例
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -28,7 +28,7 @@ namespace Xzy.SK.Api.Controllers
         }
 
         /// <summary>
-        /// 测试翻译
+        /// 测试Plugins翻译
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
@@ -46,7 +46,7 @@ namespace Xzy.SK.Api.Controllers
         }
 
         /// <summary>
-        /// 测试计算
+        /// 测试Plugins计算
         /// </summary>
         /// <param name="num1"></param>
         /// <param name="num2"></param>
@@ -190,10 +190,11 @@ namespace Xzy.SK.Api.Controllers
             var getIntentVariables = new ContextVariables
             {
                 ["input"] = msg,
-                ["options"] = "Attractions, Delicacy,Traffic,Weather,SendEmail"
+                ["options"] = "Attractions, Delicacy,Traffic,Weather,SendEmail"  //给GPT的意图，通过Prompt限定选用这些里面的
             };
             string intent = (await _kernel.RunAsync(getIntentVariables, intentPlugin["GetIntent"])).Result.Trim();
             ISKFunction MathFunction;
+            //获取意图后动态调用Fun
             switch (intent)
             {
                 case "Attractions":
@@ -235,7 +236,7 @@ namespace Xzy.SK.Api.Controllers
         {
 
             var myText = _kernel.ImportSkill(new TextSkill());
-
+            //管道模式的顺序调用
             SKContext myOutput = await _kernel.RunAsync(
                 "    i n f i n i t e     s p a c e     ",
                 myText["TrimStart"],//清除左边空格

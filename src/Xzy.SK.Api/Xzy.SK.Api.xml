@@ -4,28 +4,42 @@
         <name>Xzy.SK.Api</name>
     </assembly>
     <members>
+        <member name="M:Xzy.SK.Api.Controllers.MemoryStoreController.Save">
+            <summary>
+            保存向量
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.MemoryStoreController.Search(System.String)">
+            <summary>
+            查询向量
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
         <member name="M:Xzy.SK.Api.Controllers.OpenAIController.Translate(System.String)">
             <summary>
-            测试翻译
+            OpenAi测试翻译，可以对比与SK写法差异
             </summary>
             <param name="input"></param>
             <returns></returns>
         </member>
         <member name="T:Xzy.SK.Api.Controllers.SKController">
             <summary>
-            SK
+            SKDemo示例
             </summary>
         </member>
         <member name="M:Xzy.SK.Api.Controllers.SKController.Translate(System.String,System.String)">
             <summary>
-            测试翻译
+            测试Plugins翻译
             </summary>
             <param name="input"></param>
             <returns></returns>
         </member>
         <member name="M:Xzy.SK.Api.Controllers.SKController.Calculate(System.String,System.String)">
             <summary>
-            测试计算
+            测试Plugins计算
             </summary>
             <param name="num1"></param>
             <param name="num2"></param>
@@ -33,7 +47,7 @@
         </member>
         <member name="M:Xzy.SK.Api.Controllers.SKController.Native(System.String,System.String)">
             <summary>
-            原生测试
+            原生函数测试
             </summary>
             <param name="num1"></param>
             <param name="num2"></param>
@@ -67,6 +81,13 @@
             意图识别
             </summary>
             <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.SKController.Pipeline">
+            <summary>
+            管道
+            https://learn.microsoft.com/en-us/semantic-kernel/ai-orchestration/plugins/out-of-the-box-plugins?tabs=Csharp#whats-the-ms-graph-connector-kit
+            </summary>
             <returns></returns>
         </member>
         <member name="M:Xzy.SK.Api.plugins.MathPlugin.MathSK.Negative(System.String)">
