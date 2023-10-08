@@ -34,6 +34,10 @@ namespace Xzy.SK.Api.Controllers
              .WithAzureTextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key)
              .WithMemoryStorage(new VolatileMemoryStore())
              .Build();
+
+            //支持的vector-db
+            //https://learn.microsoft.com/en-us/semantic-kernel/memories/vector-db
+
             var bilibiliFiles = BiliBiliData();
             var i = 0;
             foreach (var entry in bilibiliFiles)
