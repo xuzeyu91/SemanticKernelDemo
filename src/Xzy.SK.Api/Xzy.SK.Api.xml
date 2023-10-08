@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Xzy.SK.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Xzy.SK.Api.Controllers.OpenAIController.Translate(System.String)">
+            <summary>
+            测试翻译
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Xzy.SK.Api.Controllers.SKController">
+            <summary>
+            SK
+            </summary>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.SKController.Translate(System.String,System.String)">
+            <summary>
+            测试翻译
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.SKController.Calculate(System.String,System.String)">
+            <summary>
+            测试计算
+            </summary>
+            <param name="num1"></param>
+            <param name="num2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.SKController.Native(System.String,System.String)">
+            <summary>
+            原生测试
+            </summary>
+            <param name="num1"></param>
+            <param name="num2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.SKController.Nested(System.String,System.String)">
+            <summary>
+            嵌套函数
+            </summary>
+            <param name="num1"></param>
+            <param name="num2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.SKController.NativeNested(System.String)">
+            <summary>
+            原生嵌套，通过自然语义先找到最大和最小的2个值，然后用最大值减去最小值得到结果返回
+            </summary>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.SKController.Plan(System.String)">
+            <summary>
+            计划
+            </summary>
+            <param name="msg">小明有7个冰淇淋，我有2个冰淇淋，他比我多几个冰淇淋？</param>
+            <param name="msg">小明有7个冰淇淋，我有2个冰淇淋，我们一共有几个冰淇淋？</param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.SKController.Intent(System.String)">
+            <summary>
+            意图识别
+            </summary>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.plugins.MathPlugin.MathSK.Negative(System.String)">
+            <summary>
+            得到负数
+            </summary>
+            <param name="number"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.plugins.MathPlugin.MathSK.Subtraction(Microsoft.SemanticKernel.Orchestration.SKContext)">
+            <summary>
+            两个数相减
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Xzy.SK.Api.plugins.UtilsPlugin._kernel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Xzy.SK.Program.GetAppSettings">
+            <summary>
+            初始化配置文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Startup.InitValidation(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            初始化模型验证
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Xzy.SK.Startup.InitSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            初始化swagger
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Xzy.SK.Startup.InitConfig">
+            <summary>
+            注入配置文件
+            </summary>
+        </member>
+    </members>
+</doc>

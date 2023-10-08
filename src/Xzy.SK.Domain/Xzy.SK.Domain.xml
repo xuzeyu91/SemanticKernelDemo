@@ -1,0 +1,566 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Xzy.SK.Domain</name>
+    </assembly>
+    <members>
+        <member name="T:Xzy.SK.Domain.ServiceCollectionExtensions">
+            <summary>
+            容器扩展
+            </summary>
+        </member>
+        <member name="M:Xzy.SK.Domain.ServiceCollectionExtensions.AddServicesFromAssemblies(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String[])">
+            <summary>
+            从程序集中加载类型并添加到容器中
+            </summary>
+            <param name="services">容器</param>
+            <param name="assemblies">程序集集合</param>
+            <returns></returns>
+        </member>
+        <member name="F:Xzy.SK.Domain.ServiceLifetime.Scoped">
+            <summary>
+            作用域
+            </summary>
+        </member>
+        <member name="F:Xzy.SK.Domain.ServiceLifetime.Singleton">
+            <summary>
+            单例
+            </summary>
+        </member>
+        <member name="F:Xzy.SK.Domain.ServiceLifetime.Transient">
+            <summary>
+            瞬时
+            </summary>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Excel.ExeclHelper.ExcelToDataTable(System.String,System.Boolean)">
+            <summary>
+            将excel导入到datatable
+            </summary>
+            <param name="filePath">excel路径</param>
+            <param name="isColumnName">第一行是否是列名</param>
+            <returns>返回datatable</returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Excel.ExeclHelper.ExcelToDataTable(System.IO.Stream,System.Boolean)">
+            <summary>
+            将excel导入到datatable
+            </summary>
+            <param name="stream">流</param>
+            <param name="isColumnName">第一行是否是列名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Excel.ExeclHelper.ExcelToList``1(System.IO.Stream)">
+            <summary>
+            excel转list
+            </summary>
+            <typeparam name="TResult"></typeparam>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Excel.ExeclHelper.ExcelToList``1(System.IO.Stream,System.String)">
+            <summary>
+            excel转list-根据sheetName得到List
+            </summary>
+            <typeparam name="TResult"></typeparam>
+            <param name="stream"></param>
+            <param name="sheetName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Excel.ExeclHelper.ListToExcel``1(``0[],System.String)">
+            <summary>
+            List导出excel 二进制流
+            </summary>
+            <typeparam name="T">实体</typeparam>
+            <param name="data">List</param>
+            <param name="sheetName">sheetname 可不填，默认Sheet0</param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Excel.ExeclHelper.DataTableToExcel(System.Data.DataTable,System.String,System.String)">
+            <summary>
+             Dt导出excel 二进制流
+            </summary>
+            <param name="dt">datatable</param>
+            <param name="strFile">strFile</param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Excel.ExeclHelper.ListWriteExcel``1(``0[],System.String,System.String)">
+            <summary>
+            List写入excel
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="data"></param>
+            <param name="strFile">路径</param>
+            <param name="sheetName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Excel.ExeclHelper.DataTableWriteExcel(System.Data.DataTable,System.String,System.String)">
+            <summary>
+            dt写入excel
+            </summary>
+            <param name="dt">datatable</param>
+            <param name="strFile">路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Map.MapperExtend.ToDTOList``1(System.Object)">
+            <summary>
+            Entity集合转DTO集合
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Map.MapperExtend.ToDTO``1(System.Object)">
+            <summary>
+            Entity转DTO
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Map.MapperExtend.MapTo``1(System.Object,``0)">
+            <summary>
+            给已有对象map,适合update场景，如需过滤空值需要在AutoMapProfile 设置
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="self"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Xzy.SK.Domain.Common.Model.PageList`1">
+            <summary>
+            返回分页结果
+            </summary>
+        </member>
+        <member name="P:Xzy.SK.Domain.Common.Model.PageList`1.PageIndex">
+            <summary>
+            当前页，从1开始
+            </summary>
+        </member>
+        <member name="P:Xzy.SK.Domain.Common.Model.PageList`1.PageSize">
+            <summary>
+            每页数量
+            </summary>
+        </member>
+        <member name="P:Xzy.SK.Domain.Common.Model.PageList`1.TotalCount">
+            <summary>
+            总数
+            </summary>
+        </member>
+        <member name="P:Xzy.SK.Domain.Common.Model.Result.Code">
+            <summary>
+            错误码，0是正常返回，异常返回错误码
+            </summary>
+        </member>
+        <member name="P:Xzy.SK.Domain.Common.Model.Result.Data">
+            <summary>
+            返回数据
+            </summary>
+        </member>
+        <member name="P:Xzy.SK.Domain.Common.Model.Result.Message">
+            <summary>
+            返回信息详情
+            </summary>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Model.ResponseResult.Success">
+            <summary>
+            执行成功
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Model.ResponseResult.Success(System.Object,System.String,System.String)">
+            <summary>
+            执行成功
+            </summary>
+            <param name="data"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Model.ResponseResult.Error(System.Object,System.String,System.String)">
+            <summary>
+            执行失败
+            </summary>
+            <param name="data"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.Model.ResponseResult.Error(System.String,System.String)">
+            <summary>
+            执行失败
+            </summary>
+            <param name="code"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.SugarExtensions.Where``1(SqlSugar.ISugarQueryable{``0},System.Collections.Generic.List{Xzy.SK.Domain.Condition})">
+            <summary>
+            兼容旧的查询参数(尽量使用新的语法,参照下面的Url地址)
+            新语法地址:https://www.donet5.com/Home/Doc?typeId=2314
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="queryable"></param>
+            <param name="conditions">查询条件</param>
+            <returns></returns>
+        </member>
+        <member name="T:Xzy.SK.Domain.ConvertUtils">
+            <summary>
+            转换工具类
+            </summary>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.IsNull(System.Object)">
+            <summary>
+            判断是否为空，为空返回true
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.IsNotNull(System.Object)">
+            <summary>
+            判断是否为空，为空返回true
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.IsNull(System.String)">
+            <summary>
+            判断是否为空，为空返回true
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.ConvertToString(System.Object)">
+            <summary>
+            将obj类型转换为string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.ConvertToInt32(System.Object)">
+            <summary>
+            object 转int32
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.ConvertToInt64(System.Object)">
+            <summary>
+            object 转int32
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.ConvertToDouble(System.Object)">
+            <summary>
+            将字符串转double
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.ConvertToDateTime(System.String)">
+            <summary>
+            转换为datetime类型
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.ConvertToDateTime(System.String,System.String)">
+            <summary>
+            转换为datetime类型的格式字符串
+            </summary>
+            <param name="s">要转换的对象</param>
+            <param name="y">格式化字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.ConvertToDecimal(System.Object)">
+            <summary>
+            将字符串转换成decimal
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.DecimalFraction(System.Decimal)">
+            <summary>
+            decimal保留2位小数
+            </summary>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.ReplaceHtml(System.String)">
+            <summary>
+            替换html种的特殊字符
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.ConvertUtils.StreamToByte(System.IO.Stream)">
+            <summary>
+            流转byte
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.EntityService.CreateEntity(System.String,System.String)">
+            <summary>
+            生成实体类
+            </summary>
+            <param name="entityName"></param>
+            <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.GetList">
+            <summary>
+            获取所有list
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.GetListAsync">
+            <summary>
+            获取所有list-异步
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.GetList(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据lambda查询
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.GetListAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据lambda查询-异步
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.Count(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据lambda表达式获取数量
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.CountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据lambda表达式获取数量-异步
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.GetPageList(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},SqlSugar.PageModel)">
+            <summary>
+            获取分页
+            </summary>
+            <param name="whereExpression"></param>
+            <param name="page"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.GetPageListAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},SqlSugar.PageModel)">
+            <summary>
+            获取分页-异步
+            </summary>
+            <param name="whereExpression"></param>
+            <param name="page"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.GetById(System.Object)">
+            <summary>
+            根据id获取实体
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.GetByIdAsync(System.Object)">
+            <summary>
+            根据id获取实体-异步
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.GetSingle(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据lambda获取单个对象 （注意，需要确保唯一，如果获取到2个会报错，这种场景需要使用GetFirst）
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.GetSingleAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary> 
+            根据lambda获取单个对象-异步  （注意，需要确保唯一，如果获取到2个会报错，这种场景需要使用GetFirst）
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.GetFirst(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据lambda获取单个对象
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.GetFirstAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据lambda获取单个对象 --异步
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.Insert(`0)">
+            <summary>
+            实体插入
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.InsertAsync(`0)">
+            <summary>
+            实体插入-异步
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.InsertRange(System.Collections.Generic.List{`0})">
+            <summary>
+            批量插入
+            </summary>
+            <param name="objs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.InsertRangeAsync(System.Collections.Generic.List{`0})">
+            <summary>
+            批量插入-异步
+            </summary>
+            <param name="objs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.InsertReturnIdentity(`0)">
+            <summary>
+            插入返回自增列
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.InsertReturnIdentityAsync(`0)">
+            <summary>
+            插入返回自增列-异步
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.InsertReturnBigIdentity(`0)">
+            <summary>
+            插入返回longid
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.InsertReturnBigIdentityAsync(`0)">
+            <summary>
+            插入返回longid-异步
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.DeleteByIds(System.Object[])">
+            <summary>
+            批量删除
+            </summary>
+            <param name="ids"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.DeleteByIdsAsync(System.Object[])">
+            <summary>
+            批量删除-异步
+            </summary>
+            <param name="ids"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.Delete(System.Object)">
+            <summary>
+            根据主键删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.DeleteAsync(System.Object)">
+            <summary>
+            根据主键删除-异步
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.Delete(`0)">
+            <summary>
+            根据实体删除
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.DeleteAsync(`0)">
+            <summary>
+            根据实体删除-异步
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.Delete(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据表达式删除
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.DeleteAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据表达式删除-异步
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.Update(`0)">
+            <summary>
+            更新
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.UpdateAsync(`0)">
+            <summary>
+            更新-异步
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.UpdateRange(System.Collections.Generic.List{`0})">
+            <summary>
+            批量更新
+            </summary>
+            <param name="objs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.UpdateRangeAsync(System.Collections.Generic.List{`0})">
+            <summary>
+            批量更新-异步
+            </summary>
+            <param name="objs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.IsAny(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            是否包含元素
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Repositories.Repository`1.IsAnyAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            是否包含元素-异步
+            </summary>
+            <param name="whereExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Xzy.SK.Domain.Repositories.Base.SqlSugarHelper.SqlServerDb">
+            <summary>
+            sqlserver连接
+            </summary>
+        </member>
+    </members>
+</doc>

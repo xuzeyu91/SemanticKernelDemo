@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>Xzy.SK.Domain.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Repositories\CRM\**" />
+    <Compile Remove="Repositories\Mng\**" />
+    <Compile Remove="Repositories\PMP\**" />
+    <Compile Remove="Repositories\WF\**" />
+    <EmbeddedResource Remove="Repositories\CRM\**" />
+    <EmbeddedResource Remove="Repositories\Mng\**" />
+    <EmbeddedResource Remove="Repositories\PMP\**" />
+    <EmbeddedResource Remove="Repositories\WF\**" />
+    <None Remove="Repositories\CRM\**" />
+    <None Remove="Repositories\Mng\**" />
+    <None Remove="Repositories\PMP\**" />
+    <None Remove="Repositories\WF\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="0.24.230918.1-preview" />
+    <PackageReference Include="NPOI" Version="2.6.2" />
+    <PackageReference Include="Polly" Version="8.0.0" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.98" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Domain\Enum\" />
+    <Folder Include="Domain\Interface\" />
+    <Folder Include="Domain\Service\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Xzy.SK.Domain.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
