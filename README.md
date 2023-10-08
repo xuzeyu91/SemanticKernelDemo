@@ -17,3 +17,5 @@
    > https://www.bilibili.com/video/BV1nm4y1V7dz/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
 7. 依赖注入、Pipeline
    > https://www.bilibili.com/video/BV1Qj41147i6/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
+8. MemoryStore向量存储与检索
+   > https://www.bilibili.com/video/BV1tu411M7k9/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
