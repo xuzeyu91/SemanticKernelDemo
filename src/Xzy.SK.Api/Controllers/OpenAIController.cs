@@ -23,7 +23,7 @@ namespace Xzy.SK.Api.Controllers
         }
 
         /// <summary>
-        /// 测试翻译
+        /// OpenAi测试翻译，可以对比与SK写法差异
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>

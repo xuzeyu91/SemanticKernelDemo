@@ -8,12 +8,9 @@ using Microsoft.SemanticKernel.Skills.Core;
 using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Xzy.SK.Api.plugins;
 using Xzy.SK.Api.plugins.MathPlugin;
-using Xzy.SK.Domain.Common.Model;
-using Xzy.SK.Domain.Common.Options;
 
 namespace Xzy.SK.Api.Controllers
 {
@@ -74,7 +71,7 @@ namespace Xzy.SK.Api.Controllers
         }
 
         /// <summary>
-        /// 原生测试
+        /// 原生函数测试
         /// </summary>
         /// <param name="num1"></param>
         /// <param name="num2"></param>
@@ -227,5 +224,27 @@ namespace Xzy.SK.Api.Controllers
 
             return Ok(result.Result);
         }
+
+        /// <summary>
+        /// 管道
+        /// https://learn.microsoft.com/en-us/semantic-kernel/ai-orchestration/plugins/out-of-the-box-plugins?tabs=Csharp#whats-the-ms-graph-connector-kit
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Pipeline()
+        {
+
+            var myText = _kernel.ImportSkill(new TextSkill());
+
+            SKContext myOutput = await _kernel.RunAsync(
+                "    i n f i n i t e     s p a c e     ",
+                myText["TrimStart"],//清除左边空格
+                myText["TrimEnd"],//清除右边空格
+                myText["Uppercase"]);//转大写
+
+            return Ok(myOutput.Result);
+        }
+
+
     }
 }
