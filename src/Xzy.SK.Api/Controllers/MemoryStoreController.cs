@@ -16,9 +16,7 @@ namespace Xzy.SK.Api.Controllers
     [ApiController]
     public class MemoryStoreController : ControllerBase
     {
-        private readonly IKernel _kernel;
-        public MemoryStoreController(IKernel kernel) {
-            _kernel = kernel;
+        public MemoryStoreController() {
         }
 
         /// <summary>
