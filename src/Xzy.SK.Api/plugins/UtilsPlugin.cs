@@ -1,6 +1,5 @@
 ﻿using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Orchestration;
-using Microsoft.SemanticKernel.SkillDefinition;
 using System;
 using System.ComponentModel;
 
@@ -18,7 +17,6 @@ namespace Xzy.SK.Api.plugins
         }
 
         [SKFunction, Description("发送邮件")]
-        [SKParameter("input", "入参")]
         public string SendEmail(SKContext context)
         {
             Console.WriteLine(context.Variables["input"]);

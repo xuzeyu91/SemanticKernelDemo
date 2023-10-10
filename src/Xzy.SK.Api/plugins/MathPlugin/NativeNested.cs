@@ -1,6 +1,5 @@
 ﻿using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Orchestration;
-using Microsoft.SemanticKernel.SkillDefinition;
 using System.Threading.Tasks;
 
 namespace Xzy.SK.Api.plugins.MathPlugin
@@ -23,7 +22,7 @@ namespace Xzy.SK.Api.plugins.MathPlugin
 
             var maxmin = await _kernel.RunAsync(request, mathPlugin1["FindMaxMin"]);
 
-            var nums = maxmin.Result.Split("-");
+            var nums = maxmin.GetValue<string>().Split("-");
 
             var variables = new ContextVariables
             {
@@ -31,7 +30,7 @@ namespace Xzy.SK.Api.plugins.MathPlugin
                 ["num2"] = nums[1]
             };
             var result = await _kernel.RunAsync(variables, mathPlugin2["Subtraction"]);
-            return result.Result;
+            return result.GetValue<string>();
         }
     }
 }

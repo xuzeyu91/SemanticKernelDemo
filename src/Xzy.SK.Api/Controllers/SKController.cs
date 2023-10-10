@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Orchestration;
-using Microsoft.SemanticKernel.Planning;
-using Microsoft.SemanticKernel.SkillDefinition;
-using Microsoft.SemanticKernel.Skills.Core;
+using Microsoft.SemanticKernel.Planners;
+using Microsoft.SemanticKernel.Plugins.Core;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -38,11 +37,11 @@ namespace Xzy.SK.Api.Controllers
             //导入本地技能
             var pluginsDirectory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "plugins");
             var writerPlugin = _kernel
-                 .ImportSemanticSkillFromDirectory(pluginsDirectory, "Translate");
+                 .ImportSemanticFunctionsFromDirectory(pluginsDirectory, "Translate");
 
             var result = await _kernel.RunAsync(input, writerPlugin[language]);
 
-            return Ok(result.Result);
+            return Ok(result.GetValue<string>());
         }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace Xzy.SK.Api.Controllers
 
             var pluginsDirectory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "plugins");
             var calculatePlugin = _kernel
-                 .ImportSemanticSkillFromDirectory(pluginsDirectory, "Calculate");
+                 .ImportSemanticFunctionsFromDirectory(pluginsDirectory, "Calculate");
 
             var variables = new ContextVariables
             {
@@ -67,7 +66,7 @@ namespace Xzy.SK.Api.Controllers
             };
             var result = await _kernel.RunAsync(variables, calculatePlugin["Addition"]);
 
-            return Ok(result.Result);
+            return Ok(result.GetValue<string>());
         }
 
         /// <summary>
@@ -81,7 +80,7 @@ namespace Xzy.SK.Api.Controllers
         {
             //导入原生函数
 
-            var mathPlugin = _kernel.ImportSkill(new MathSK(), "MathPlugin");
+            var mathPlugin = _kernel.ImportFunctions(new MathSK(), "MathPlugin");
 
             var variables = new ContextVariables
             {
@@ -90,7 +89,7 @@ namespace Xzy.SK.Api.Controllers
             };
             var result = await _kernel.RunAsync(variables, mathPlugin["Subtraction"]);
 
-            return Ok(result.Result);
+            return Ok(result.GetValue<string>());
         }
 
         /// <summary>
@@ -106,9 +105,9 @@ namespace Xzy.SK.Api.Controllers
             //嵌套函数使用，在prompty中使用  {{Plugin.Fun}} 可以嵌套调用
             var pluginsDirectory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "plugins");
             var calculatePlugin = _kernel
-                .ImportSemanticSkillFromDirectory(pluginsDirectory, "Calculate");
+                .ImportSemanticFunctionsFromDirectory(pluginsDirectory, "Calculate");
             //MathPlugin Multiplication 中可以嵌套其他函数
-            var mathPlugin = _kernel.ImportSkill(new MathSK(), "MathPlugin");
+            var mathPlugin = _kernel.ImportFunctions(new MathSK(), "MathPlugin");
 
             var variables = new ContextVariables
             {
@@ -117,7 +116,7 @@ namespace Xzy.SK.Api.Controllers
             };
             var result = await _kernel.RunAsync(variables, calculatePlugin["Multiplication"]);
 
-            return Ok(result.Result);
+            return Ok(result.GetValue<string>());
         }
 
       
@@ -133,11 +132,11 @@ namespace Xzy.SK.Api.Controllers
         {
 
 
-            var NativeNested = _kernel.ImportSkill(new NativeNested(_kernel), "NativeNested");
+            var NativeNested = _kernel.ImportFunctions(new NativeNested(_kernel), "NativeNested");
 
             var result = await _kernel.RunAsync(msg, NativeNested["Test"]);
 
-            return Ok(result.Result);
+            return Ok(result.GetValue<string>());
         }
 
 
@@ -156,13 +155,13 @@ namespace Xzy.SK.Api.Controllers
 
             var pluginsDirectory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "plugins");
             var calculatePlugin = _kernel
-                .ImportSemanticSkillFromDirectory(pluginsDirectory, "Calculate");
+                .ImportSemanticFunctionsFromDirectory(pluginsDirectory, "Calculate");
 
             var plan = await planner.CreatePlanAsync(msg);
             Console.WriteLine("Plan:\n");
             Console.WriteLine(JsonConvert.SerializeObject(plan));
 
-            var result = (await _kernel.RunAsync(plan)).Result;
+            var result = (await _kernel.RunAsync(plan)).GetValue<string>();
             return Ok(result);
         }
 
@@ -178,36 +177,36 @@ namespace Xzy.SK.Api.Controllers
         {
 
             //对话摘要  SK.Skills.Core 核心技能
-            _kernel.ImportSkill(new ConversationSummarySkill(_kernel), "ConversationSummarySkill");
+            _kernel.ImportFunctions(new ConversationSummaryPlugin(_kernel), "ConversationSummarySkill");
 
             var pluginsDirectory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "plugins");
             var intentPlugin = _kernel
-                 .ImportSemanticSkillFromDirectory(pluginsDirectory, "BasePlugin");
+                 .ImportSemanticFunctionsFromDirectory(pluginsDirectory, "BasePlugin");
             var travelPlugin = _kernel
-                 .ImportSemanticSkillFromDirectory(pluginsDirectory, "Travel");
+                 .ImportSemanticFunctionsFromDirectory(pluginsDirectory, "Travel");
 
-            var NativeNested = _kernel.ImportSkill(new UtilsPlugin(_kernel), "UtilsPlugin");
+            var NativeNested = _kernel.ImportFunctions(new UtilsPlugin(_kernel), "UtilsPlugin");
             var getIntentVariables = new ContextVariables
             {
                 ["input"] = msg,
                 ["options"] = "Attractions, Delicacy,Traffic,Weather,SendEmail"  //给GPT的意图，通过Prompt限定选用这些里面的
             };
-            string intent = (await _kernel.RunAsync(getIntentVariables, intentPlugin["GetIntent"])).Result.Trim();
+            string intent = (await _kernel.RunAsync(getIntentVariables, intentPlugin["GetIntent"])).GetValue<string>().Trim();
             ISKFunction MathFunction;
             //获取意图后动态调用Fun
             switch (intent)
             {
                 case "Attractions":
-                    MathFunction = _kernel.Skills.GetFunction("Travel", "Attractions");
+                    MathFunction = _kernel.Functions.GetFunction("Travel", "Attractions");
                     break;
                 case "Delicacy":
-                    MathFunction = _kernel.Skills.GetFunction("Travel", "Delicacy");
+                    MathFunction = _kernel.Functions.GetFunction("Travel", "Delicacy");
                     break;
                 case "Traffic":
-                    MathFunction = _kernel.Skills.GetFunction("Travel", "Traffic");
+                    MathFunction = _kernel.Functions.GetFunction("Travel", "Traffic");
                     break;
                 case "Weather":
-                    MathFunction = _kernel.Skills.GetFunction("Travel", "Weather");
+                    MathFunction = _kernel.Functions.GetFunction("Travel", "Weather");
                     break;
                 case "SendEmail":
                     var sendEmailVariables = new ContextVariables
@@ -215,15 +214,15 @@ namespace Xzy.SK.Api.Controllers
                         ["input"] = msg,
                         ["example"] = JsonConvert.SerializeObject(new { send_user = "xzy", receiver_user = "xzy", body = "hello" })
                     };
-                    msg = (await _kernel.RunAsync(sendEmailVariables, intentPlugin["JSON"])).Result;
-                    MathFunction = _kernel.Skills.GetFunction("UtilsPlugin", "SendEmail");
+                    msg = (await _kernel.RunAsync(sendEmailVariables, intentPlugin["JSON"])).GetValue<string>();
+                    MathFunction = _kernel.Functions.GetFunction("UtilsPlugin", "SendEmail");
                     break;
                 default:
                     return Ok("对不起我不知道");
             }
             var result = await _kernel.RunAsync(msg, MathFunction);
 
-            return Ok(result.Result);
+            return Ok(result.GetValue<string>());
         }
 
         /// <summary>
@@ -235,15 +234,15 @@ namespace Xzy.SK.Api.Controllers
         public async Task<IActionResult> Pipeline()
         {
 
-            var myText = _kernel.ImportSkill(new TextSkill());
+            var myText = _kernel.ImportFunctions(new TextPlugin());
             //管道模式的顺序调用
-            SKContext myOutput = await _kernel.RunAsync(
+            var myOutput = await _kernel.RunAsync(
                 "    i n f i n i t e     s p a c e     ",
                 myText["TrimStart"],//清除左边空格
                 myText["TrimEnd"],//清除右边空格
                 myText["Uppercase"]);//转大写
 
-            return Ok(myOutput.Result);
+            return Ok(myOutput.GetValue<string>());
         }
 
 

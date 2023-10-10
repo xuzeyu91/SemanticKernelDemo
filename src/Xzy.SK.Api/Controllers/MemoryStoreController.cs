@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
 using Microsoft.SemanticKernel.Memory;
+using Microsoft.SemanticKernel.Plugins.Memory;
 using NPOI.POIFS.FileSystem;
 using System;
 using System.Collections;
@@ -28,9 +30,9 @@ namespace Xzy.SK.Api.Controllers
         public async Task<IActionResult> MemoryStore(string text)
         {
             //创建embedding实例
-            var kernelWithCustomDb = Kernel.Builder
+            var memoryWithCustomDb = new  MemoryBuilder()
              .WithAzureTextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key)
-             .WithMemoryStorage(new VolatileMemoryStore())
+             .WithMemoryStore(new VolatileMemoryStore())
              .Build();
 
             //支持的vector-db
@@ -40,7 +42,7 @@ namespace Xzy.SK.Api.Controllers
             var i = 0;
             foreach (var entry in bilibiliFiles)
             {
-                await kernelWithCustomDb.Memory.SaveReferenceAsync(
+                await memoryWithCustomDb.SaveReferenceAsync(
                     collection: "BiliBili",
                     externalSourceName: "BiliBili",
                     externalId: entry.Key,
@@ -51,7 +53,7 @@ namespace Xzy.SK.Api.Controllers
             }
 
 
-            var memories = kernelWithCustomDb.Memory.SearchAsync("BiliBili", text, limit: 2, minRelevanceScore: 0.5);
+            var memories = memoryWithCustomDb.SearchAsync("BiliBili", text, limit: 2, minRelevanceScore: 0.5);
 
             string result = "" ;
             await foreach (MemoryQueryResult memory in memories)

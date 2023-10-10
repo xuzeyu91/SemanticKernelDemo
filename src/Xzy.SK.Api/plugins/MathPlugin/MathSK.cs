@@ -1,5 +1,5 @@
-﻿using Microsoft.SemanticKernel.Orchestration;
-using Microsoft.SemanticKernel.SkillDefinition;
+﻿using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Orchestration;
 using System;
 using System.ComponentModel;
 using System.Globalization;
@@ -26,8 +26,6 @@ namespace Xzy.SK.Api.plugins.MathPlugin
         /// <param name="context"></param>
         /// <returns></returns>
         [SKFunction, Description("两个数相减")]
-        [SKParameter("num1", "第一个数")]
-        [SKParameter("num2", "第二个数")]
         public string Subtraction(SKContext context)
         {
             return (
