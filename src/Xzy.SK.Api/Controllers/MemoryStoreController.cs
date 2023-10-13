@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
+using Microsoft.SemanticKernel.Connectors.AI.OpenAI.TextEmbedding;
 using Microsoft.SemanticKernel.Memory;
 using Microsoft.SemanticKernel.Plugins.Memory;
 using NPOI.POIFS.FileSystem;
@@ -9,7 +10,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
+using Xzy.SK.Domain.Common.Model;
 using Xzy.SK.Domain.Common.Options;
 
 namespace Xzy.SK.Api.Controllers
@@ -18,7 +21,11 @@ namespace Xzy.SK.Api.Controllers
     [ApiController]
     public class MemoryStoreController : ControllerBase
     {
-        public MemoryStoreController() {
+        private readonly IKernel _kernel;
+
+        public MemoryStoreController(IKernel kernel)
+        {
+            _kernel = kernel;
         }
 
         /// <summary>
@@ -30,7 +37,7 @@ namespace Xzy.SK.Api.Controllers
         public async Task<IActionResult> MemoryStore(string text)
         {
             //创建embedding实例
-            var memoryWithCustomDb = new  MemoryBuilder()
+            var memoryWithCustomDb = new MemoryBuilder()
              .WithAzureTextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key)
              .WithMemoryStore(new VolatileMemoryStore())
              .Build();
@@ -52,18 +59,16 @@ namespace Xzy.SK.Api.Controllers
                 Console.Write($" #{++i} 保存成功.");
             }
 
-
             var memories = memoryWithCustomDb.SearchAsync("BiliBili", text, limit: 2, minRelevanceScore: 0.5);
 
-            string result = "" ;
+            string result = "";
             await foreach (MemoryQueryResult memory in memories)
             {
-                result += $"Id:{memory.Metadata.Id},Description:{memory.Metadata.Description},Relevance：{memory.Relevance}\n" ;
+                result += $"Id:{memory.Metadata.Id},Description:{memory.Metadata.Description},Relevance：{memory.Relevance}\n";
             }
 
             return Ok(result);
         }
-
 
         private Dictionary<string, string> BiliBiliData()
         {
@@ -84,6 +89,134 @@ namespace Xzy.SK.Api.Controllers
                 ["https://www.bilibili.com/video/BV1Qj41147i6/"]
                     = "SK 依赖注入、Pipeline"
             };
+        }
+
+        /// <summary>
+        /// 第1部分：使用ISemanticTextMemory（textMemory）对象存储和检索内存。
+        ///这是一种从代码角度存储内存的简单方法，无需使用内核。
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> TextMemory1()
+        {
+            IMemoryStore memoryStore = new VolatileMemoryStore();
+            var embeddingGenerator = new AzureTextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
+
+            SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
+
+            await textMemory.SaveInformationAsync("Xzy", id: "info1", text: "我的名字是许泽宇", cancellationToken: default);
+            await textMemory.SaveInformationAsync("Xzy", id: "info2", text: "我的职位是架构师", cancellationToken: default);
+            await textMemory.SaveInformationAsync("Xzy", id: "info3", text: "我有13年工作经验", cancellationToken: default);
+            await textMemory.SaveInformationAsync("Xzy", id: "info4", text: "我擅长.Net Core、微服务、云原生、AI", cancellationToken: default);
+
+            var memoryPlugin = new TextMemoryPlugin(textMemory);
+            var memoryFunctions = _kernel.ImportFunctions(memoryPlugin);
+            MemoryQueryResult? lookup = await textMemory.GetAsync("Xzy", "info1", cancellationToken: default);
+            Console.WriteLine(" 'info1':" + lookup?.Metadata.Text ?? "ERROR: memory 没找到");
+
+            return Ok();
+        }
+
+        /// <summary>
+        ///第2部分：创建TextMemoryPlugin，通过内核存储和检索内存。
+        ///这使得语义功能和人工智能（通过规划者）能够访问记忆
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> TextMemory2()
+        {
+            IMemoryStore memoryStore = new VolatileMemoryStore();
+            var embeddingGenerator = new AzureTextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
+
+            SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
+            var memoryPlugin = new TextMemoryPlugin(textMemory);
+            var memoryFunctions = _kernel.ImportFunctions(memoryPlugin);
+            await _kernel.RunAsync(memoryFunctions["Save"], new()
+            {
+                [TextMemoryPlugin.CollectionParam] = "Xzy",
+                [TextMemoryPlugin.KeyParam] = "info1",
+                ["input"] = "我的名字是许泽宇"
+            }, cancellationToken: default);
+            var result = await _kernel.RunAsync(memoryFunctions["Retrieve"], new()
+            {
+                [TextMemoryPlugin.CollectionParam] = "Xzy",
+                [TextMemoryPlugin.KeyParam] = "info1"
+            }, cancellationToken: default);
+            return Ok(result.GetValue<string>());
+        }
+
+        /// <summary>
+        ///第三部分：用语义搜索回忆相似的想法
+        ///使用AI嵌入基于意图而非特定密钥对内存进行模糊查找。
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> TextMemory3()
+        {
+            IMemoryStore memoryStore = new VolatileMemoryStore();
+            var embeddingGenerator = new AzureTextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
+
+            SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
+            await textMemory.SaveInformationAsync("Xzy", id: "info1", text: "我的名字是许泽宇", cancellationToken: default);
+            await textMemory.SaveInformationAsync("Xzy", id: "info2", text: "我的职位是架构师", cancellationToken: default);
+            await textMemory.SaveInformationAsync("Xzy", id: "info3", text: "我有13年工作经验", cancellationToken: default);
+            await textMemory.SaveInformationAsync("Xzy", id: "info4", text: "我擅长.Net Core、微服务、云原生、AI", cancellationToken: default);
+
+            await foreach (var answer in textMemory.SearchAsync(
+                     collection: "Xzy",
+                     query: "我叫什么名字?",
+                     limit: 2,
+                     minRelevanceScore: 0.79,
+                     withEmbeddings: true,
+                     cancellationToken: default))
+            {
+                Console.WriteLine($"Answer: {answer.Metadata.Text} ");
+            }
+            return Ok();
+        }
+
+        private const string RecallFunctionDefinition = @"
+回答问题时只考虑以下事实：
+开始事实
+关于我： {{Recall '我在哪里长大的？'}}
+关于我： {{Recall '我现在住在哪里？'}}
+结束事实
+
+问题: {{$input}}
+
+答案:
+";
+
+        /// <summary>
+        ///TextMemoryPugin在语义函数中的回忆
+        ///渲染提示模板时查找相关内存，然后将渲染的提示发送到
+        ///用于回答自然语言查询的文本完成模型。
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> TextMemory4()
+        {
+            IMemoryStore memoryStore = new VolatileMemoryStore();
+            var embeddingGenerator = new AzureTextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
+
+            SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
+
+            await textMemory.SaveInformationAsync("Xzy", id: "info1", text: "我的名字是许泽宇", cancellationToken: default);
+            await textMemory.SaveInformationAsync("Xzy", id: "info2", text: "我的职位是架构师", cancellationToken: default);
+            await textMemory.SaveInformationAsync("Xzy", id: "info3", text: "我有13年工作经验", cancellationToken: default);
+            await textMemory.SaveInformationAsync("Xzy", id: "info4", text: "我擅长.Net Core、微服务、云原生、AI", cancellationToken: default);
+            await textMemory.SaveInformationAsync("Xzy", id: "info5", text: "我住在武汉", cancellationToken: default);
+            var memoryPlugin = new TextMemoryPlugin(textMemory);
+            var memoryFunctions = _kernel.ImportFunctions(memoryPlugin);
+            var aboutMeOracle = _kernel.CreateSemanticFunction(RecallFunctionDefinition, requestSettings: new OpenAIRequestSettings() { MaxTokens = 100 });
+
+            var result = await _kernel.RunAsync(aboutMeOracle, new()
+            {
+                [TextMemoryPlugin.CollectionParam] = "Xzy",
+                [TextMemoryPlugin.RelevanceParam] = "0.79",
+                ["input"] = "我住在哪里?"
+            }, cancellationToken: default);
+            return Ok(result.GetValue<string>());
         }
     }
 }

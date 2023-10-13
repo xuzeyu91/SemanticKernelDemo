@@ -20,14 +20,15 @@ using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Xzy.SK.Domain.Common.Utils;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Plugins.Memory;
 
 namespace Xzy.SK
 {
-    public class Startup 
+    public class Startup
     {
-
         public IHostEnvironment Env { get; set; }
         private readonly string Any = "Any";
+
         public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
@@ -58,7 +59,7 @@ namespace Xzy.SK
             InitSwagger(services);
             //Mapper
             services.AddMapper();
-        
+
             //允许跨域
             services.AddCors(options => options.AddPolicy(Any,
                builder =>
@@ -76,7 +77,6 @@ namespace Xzy.SK
             InitSK(services);
         }
 
-
         private static void InitSK(IServiceCollection services)
         {
             services.AddTransient<IKernel>((serviceProvider) =>
@@ -86,10 +86,10 @@ namespace Xzy.SK
                      OpenAIOptions.Model,
                      OpenAIOptions.Endpoint,
                      OpenAIOptions.Key)
+                .WithAzureTextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key)
                 .Build();
             });
         }
-
 
         /// <summary>
         /// 初始化模型验证
@@ -101,7 +101,6 @@ namespace Xzy.SK
             services.AddControllersWithViews()
             .AddFluentValidation(config =>//添加FluentValidation验证
             {
-
                 //程序集方式添加验证
                 // config.RegisterValidatorsFromAssemblyContaining(typeof(TMTotalCostGenerateDetailValidation));
                 //注入程序集
@@ -132,7 +131,6 @@ namespace Xzy.SK
                 };
             });
         }
-   
 
         /// <summary>
         /// 初始化swagger
@@ -197,7 +195,6 @@ namespace Xzy.SK
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
-          
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -4,12 +4,47 @@
         <name>Xzy.SK.Api</name>
     </assembly>
     <members>
+        <member name="M:Xzy.SK.Api.Controllers.FunCoreDemoController.ConversationSummary">
+            <summary>
+            会话总结，标签提取
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Xzy.SK.Api.Controllers.MemoryStoreController.MemoryStore(System.String)">
             <summary>
             查询向量
             </summary>
             <param name="text"></param>
             <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.MemoryStoreController.TextMemory1">
+             <summary>
+             第1部分：使用ISemanticTextMemory（textMemory）对象存储和检索内存。
+            这是一种从代码角度存储内存的简单方法，无需使用内核。
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.MemoryStoreController.TextMemory2">
+             <summary>
+            第2部分：创建TextMemoryPlugin，通过内核存储和检索内存。
+            这使得语义功能和人工智能（通过规划者）能够访问记忆
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.MemoryStoreController.TextMemory3">
+             <summary>
+            第三部分：用语义搜索回忆相似的想法
+            使用AI嵌入基于意图而非特定密钥对内存进行模糊查找。
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.MemoryStoreController.TextMemory4">
+             <summary>
+            TextMemoryPugin在语义函数中的回忆
+            渲染提示模板时查找相关内存，然后将渲染的提示发送到
+            用于回答自然语言查询的文本完成模型。
+             </summary>
+             <returns></returns>
         </member>
         <member name="M:Xzy.SK.Api.Controllers.OpenAIController.Translate(System.String)">
             <summary>
@@ -18,19 +53,19 @@
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="T:Xzy.SK.Api.Controllers.SKController">
+        <member name="T:Xzy.SK.Api.Controllers.SKDemoController">
             <summary>
             SKDemo示例
             </summary>
         </member>
-        <member name="M:Xzy.SK.Api.Controllers.SKController.Translate(System.String,System.String)">
+        <member name="M:Xzy.SK.Api.Controllers.SKDemoController.Translate(System.String,System.String)">
             <summary>
             测试Plugins翻译
             </summary>
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:Xzy.SK.Api.Controllers.SKController.Calculate(System.String,System.String)">
+        <member name="M:Xzy.SK.Api.Controllers.SKDemoController.Calculate(System.String,System.String)">
             <summary>
             测试Plugins计算
             </summary>
@@ -38,7 +73,7 @@
             <param name="num2"></param>
             <returns></returns>
         </member>
-        <member name="M:Xzy.SK.Api.Controllers.SKController.Native(System.String,System.String)">
+        <member name="M:Xzy.SK.Api.Controllers.SKDemoController.Native(System.String,System.String)">
             <summary>
             原生函数测试
             </summary>
@@ -46,7 +81,7 @@
             <param name="num2"></param>
             <returns></returns>
         </member>
-        <member name="M:Xzy.SK.Api.Controllers.SKController.Nested(System.String,System.String)">
+        <member name="M:Xzy.SK.Api.Controllers.SKDemoController.Nested(System.String,System.String)">
             <summary>
             嵌套函数
             </summary>
@@ -54,14 +89,14 @@
             <param name="num2"></param>
             <returns></returns>
         </member>
-        <member name="M:Xzy.SK.Api.Controllers.SKController.NativeNested(System.String)">
+        <member name="M:Xzy.SK.Api.Controllers.SKDemoController.NativeNested(System.String)">
             <summary>
             原生嵌套，通过自然语义先找到最大和最小的2个值，然后用最大值减去最小值得到结果返回
             </summary>
             <param name="msg"></param>
             <returns></returns>
         </member>
-        <member name="M:Xzy.SK.Api.Controllers.SKController.Plan(System.String)">
+        <member name="M:Xzy.SK.Api.Controllers.SKDemoController.Plan(System.String)">
             <summary>
             计划
             </summary>
@@ -69,14 +104,14 @@
             <param name="msg">小明有7个冰淇淋，我有2个冰淇淋，我们一共有几个冰淇淋？</param>
             <returns></returns>
         </member>
-        <member name="M:Xzy.SK.Api.Controllers.SKController.Intent(System.String)">
+        <member name="M:Xzy.SK.Api.Controllers.SKDemoController.Intent(System.String)">
             <summary>
             意图识别
             </summary>
             <param name="msg"></param>
             <returns></returns>
         </member>
-        <member name="M:Xzy.SK.Api.Controllers.SKController.Pipeline">
+        <member name="M:Xzy.SK.Api.Controllers.SKDemoController.Pipeline">
             <summary>
             管道
             https://learn.microsoft.com/en-us/semantic-kernel/ai-orchestration/plugins/out-of-the-box-plugins?tabs=Csharp#whats-the-ms-graph-connector-kit
