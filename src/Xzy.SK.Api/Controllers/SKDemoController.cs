@@ -18,10 +18,11 @@ namespace Xzy.SK.Api.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class SKController : ControllerBase
+    public class SKDemoController : ControllerBase
     {
         private readonly IKernel _kernel;
-        public SKController(IKernel kernel)
+
+        public SKDemoController(IKernel kernel)
         {
             _kernel = kernel;
         }
@@ -32,7 +33,7 @@ namespace Xzy.SK.Api.Controllers
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Translate(string input,string language)
+        public async Task<IActionResult> Translate(string input, string language)
         {
             //导入本地技能
             var pluginsDirectory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "plugins");
@@ -101,7 +102,6 @@ namespace Xzy.SK.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Nested(string num1, string num2)
         {
-
             //嵌套函数使用，在prompty中使用  {{Plugin.Fun}} 可以嵌套调用
             var pluginsDirectory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "plugins");
             var calculatePlugin = _kernel
@@ -119,8 +119,6 @@ namespace Xzy.SK.Api.Controllers
             return Ok(result.GetValue<string>());
         }
 
-      
-
         /// <summary>
         /// 原生嵌套，通过自然语义先找到最大和最小的2个值，然后用最大值减去最小值得到结果返回
         /// </summary>
@@ -130,15 +128,12 @@ namespace Xzy.SK.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> NativeNested(string msg)
         {
-
-
             var NativeNested = _kernel.ImportFunctions(new NativeNested(_kernel), "NativeNested");
 
             var result = await _kernel.RunAsync(msg, NativeNested["Test"]);
 
             return Ok(result.GetValue<string>());
         }
-
 
         /// <summary>
         /// 计划
@@ -149,8 +144,6 @@ namespace Xzy.SK.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Plan(string msg)
         {
-
-
             var planner = new SequentialPlanner(_kernel);
 
             var pluginsDirectory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "plugins");
@@ -165,8 +158,6 @@ namespace Xzy.SK.Api.Controllers
             return Ok(result);
         }
 
-
-
         /// <summary>
         /// 意图识别
         /// </summary>
@@ -175,7 +166,6 @@ namespace Xzy.SK.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Intent(string msg)
         {
-
             //对话摘要  SK.Skills.Core 核心技能
             _kernel.ImportFunctions(new ConversationSummaryPlugin(_kernel), "ConversationSummarySkill");
 
@@ -199,15 +189,19 @@ namespace Xzy.SK.Api.Controllers
                 case "Attractions":
                     MathFunction = _kernel.Functions.GetFunction("Travel", "Attractions");
                     break;
+
                 case "Delicacy":
                     MathFunction = _kernel.Functions.GetFunction("Travel", "Delicacy");
                     break;
+
                 case "Traffic":
                     MathFunction = _kernel.Functions.GetFunction("Travel", "Traffic");
                     break;
+
                 case "Weather":
                     MathFunction = _kernel.Functions.GetFunction("Travel", "Weather");
                     break;
+
                 case "SendEmail":
                     var sendEmailVariables = new ContextVariables
                     {
@@ -217,6 +211,7 @@ namespace Xzy.SK.Api.Controllers
                     msg = (await _kernel.RunAsync(sendEmailVariables, intentPlugin["JSON"])).GetValue<string>();
                     MathFunction = _kernel.Functions.GetFunction("UtilsPlugin", "SendEmail");
                     break;
+
                 default:
                     return Ok("对不起我不知道");
             }
@@ -233,7 +228,6 @@ namespace Xzy.SK.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Pipeline()
         {
-
             var myText = _kernel.ImportFunctions(new TextPlugin());
             //管道模式的顺序调用
             var myOutput = await _kernel.RunAsync(
@@ -244,7 +238,5 @@ namespace Xzy.SK.Api.Controllers
 
             return Ok(myOutput.GetValue<string>());
         }
-
-
     }
 }
