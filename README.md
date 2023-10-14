@@ -19,11 +19,11 @@
    > https://www.bilibili.com/video/BV1Qj41147i6/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
 8. MemoryStore向量存储与检索
    > https://www.bilibili.com/video/BV1tu411M7k9/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
-9.  1.0beta1版本有哪些更新
+9. 1.0beta1版本有哪些更新
    > https://www.bilibili.com/video/BV1E34y1G7Pz/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
-   10. SK如何对接ChatGLM 通义 文心 星火等其他大模型
-      > https://www.bilibili.com/video/BV1uw41117gf/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
-   11. ConversationPlugins
-      > https://www.bilibili.com/video/BV1s34y1g7ux/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
-   12. TextMemory
-      > https://www.bilibili.com/video/BV12w411c7yY/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
+10. SK如何对接ChatGLM 通义 文心 星火等其他大模型
+   > https://www.bilibili.com/video/BV1uw41117gf/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
+11. ConversationPlugins
+   > https://www.bilibili.com/video/BV1s34y1g7ux/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
+12. TextMemory
+   > https://www.bilibili.com/video/BV12w411c7yY/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
