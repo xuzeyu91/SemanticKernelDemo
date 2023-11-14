@@ -82,11 +82,11 @@ namespace Xzy.SK
             services.AddTransient<IKernel>((serviceProvider) =>
             {
                 return Kernel.Builder
-                .WithAzureChatCompletionService(
+                .WithAzureOpenAIChatCompletionService(
                      OpenAIOptions.Model,
                      OpenAIOptions.Endpoint,
                      OpenAIOptions.Key)
-                .WithAzureTextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key)
+                .WithAzureOpenAITextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key)
                 .Build();
             });
         }

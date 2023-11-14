@@ -38,7 +38,7 @@ namespace Xzy.SK.Api.Controllers
         {
             //创建embedding实例
             var memoryWithCustomDb = new MemoryBuilder()
-             .WithAzureTextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key)
+             .WithAzureOpenAITextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key)
              .WithMemoryStore(new VolatileMemoryStore())
              .Build();
 
@@ -100,7 +100,7 @@ namespace Xzy.SK.Api.Controllers
         public async Task<IActionResult> TextMemory1()
         {
             IMemoryStore memoryStore = new VolatileMemoryStore();
-            var embeddingGenerator = new AzureTextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
+            var embeddingGenerator = new AzureOpenAITextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
 
             SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
 
@@ -126,7 +126,7 @@ namespace Xzy.SK.Api.Controllers
         public async Task<IActionResult> TextMemory2()
         {
             IMemoryStore memoryStore = new VolatileMemoryStore();
-            var embeddingGenerator = new AzureTextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
+            var embeddingGenerator = new AzureOpenAITextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
 
             SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
             var memoryPlugin = new TextMemoryPlugin(textMemory);
@@ -154,7 +154,7 @@ namespace Xzy.SK.Api.Controllers
         public async Task<IActionResult> TextMemory3()
         {
             IMemoryStore memoryStore = new VolatileMemoryStore();
-            var embeddingGenerator = new AzureTextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
+            var embeddingGenerator = new AzureOpenAITextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
 
             SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
             await textMemory.SaveInformationAsync("Xzy", id: "info1", text: "我的名字是许泽宇", cancellationToken: default);
@@ -197,7 +197,7 @@ namespace Xzy.SK.Api.Controllers
         public async Task<IActionResult> TextMemory4()
         {
             IMemoryStore memoryStore = new VolatileMemoryStore();
-            var embeddingGenerator = new AzureTextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
+            var embeddingGenerator = new AzureOpenAITextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
 
             SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
 
