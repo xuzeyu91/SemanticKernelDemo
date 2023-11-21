@@ -46,6 +46,12 @@
              </summary>
              <returns></returns>
         </member>
+        <member name="M:Xzy.SK.Api.Controllers.MsgContextController.Test">
+            <summary>
+            聊天上下文
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Xzy.SK.Api.Controllers.OpenAIController.Translate(System.String)">
             <summary>
             OpenAi测试翻译，可以对比与SK写法差异
@@ -115,6 +121,12 @@
             <summary>
             管道
             https://learn.microsoft.com/en-us/semantic-kernel/ai-orchestration/plugins/out-of-the-box-plugins?tabs=Csharp#whats-the-ms-graph-connector-kit
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Api.Controllers.TextChunkController.Test">
+            <summary>
+            文本分块
             </summary>
             <returns></returns>
         </member>
