@@ -27,3 +27,9 @@
       > https://www.bilibili.com/video/BV1s34y1g7ux/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
 12. TextMemory
       > https://www.bilibili.com/video/BV12w411c7yY/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
+13. Template
+      > https://www.bilibili.com/video/BV1T94y1j78H/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
+14. 聊天上下文
+      > https://www.bilibili.com/video/BV16N411T7uW/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
+15. TextChunk
+      > https://www.bilibili.com/video/BV1gw411p7LE/?share_source=copy_web&vd_source=a71998b5a5f44b203630a79e1a22c179
