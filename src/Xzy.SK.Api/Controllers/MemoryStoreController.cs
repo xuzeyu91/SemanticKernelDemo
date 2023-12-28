@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
-using Microsoft.SemanticKernel.Connectors.AI.OpenAI.TextEmbedding;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Memory;
 using Microsoft.SemanticKernel.Plugins.Memory;
 using NPOI.POIFS.FileSystem;
@@ -21,9 +20,9 @@ namespace Xzy.SK.Api.Controllers
     [ApiController]
     public class MemoryStoreController : ControllerBase
     {
-        private readonly IKernel _kernel;
+        private readonly Kernel _kernel;
 
-        public MemoryStoreController(IKernel kernel)
+        public MemoryStoreController(Kernel kernel)
         {
             _kernel = kernel;
         }
@@ -38,7 +37,7 @@ namespace Xzy.SK.Api.Controllers
         {
             //创建embedding实例
             var memoryWithCustomDb = new MemoryBuilder()
-             .WithAzureOpenAITextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key)
+             .WithAzureOpenAITextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key)
              .WithMemoryStore(new VolatileMemoryStore())
              .Build();
 
@@ -100,7 +99,7 @@ namespace Xzy.SK.Api.Controllers
         public async Task<IActionResult> TextMemory1()
         {
             IMemoryStore memoryStore = new VolatileMemoryStore();
-            var embeddingGenerator = new AzureOpenAITextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
+            var embeddingGenerator = new AzureOpenAITextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
 
             SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
 
@@ -110,7 +109,7 @@ namespace Xzy.SK.Api.Controllers
             await textMemory.SaveInformationAsync("Xzy", id: "info4", text: "我擅长.Net Core、微服务、云原生、AI", cancellationToken: default);
 
             var memoryPlugin = new TextMemoryPlugin(textMemory);
-            var memoryFunctions = _kernel.ImportFunctions(memoryPlugin);
+            var memoryFunctions = _kernel.ImportPluginFromObject(memoryPlugin);
             MemoryQueryResult? lookup = await textMemory.GetAsync("Xzy", "info1", cancellationToken: default);
             Console.WriteLine(" 'info1':" + lookup?.Metadata.Text ?? "ERROR: memory 没找到");
 
@@ -126,18 +125,19 @@ namespace Xzy.SK.Api.Controllers
         public async Task<IActionResult> TextMemory2()
         {
             IMemoryStore memoryStore = new VolatileMemoryStore();
-            var embeddingGenerator = new AzureOpenAITextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
+            //AzureOpenAITextEmbeddingGenerationService
+            var embeddingGenerator = new AzureOpenAITextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
 
             SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
             var memoryPlugin = new TextMemoryPlugin(textMemory);
-            var memoryFunctions = _kernel.ImportFunctions(memoryPlugin);
-            await _kernel.RunAsync(memoryFunctions["Save"], new()
+            var memoryFunctions = _kernel.ImportPluginFromObject(memoryPlugin);
+            await _kernel.InvokeAsync(memoryFunctions["Save"], new()
             {
                 [TextMemoryPlugin.CollectionParam] = "Xzy",
                 [TextMemoryPlugin.KeyParam] = "info1",
                 ["input"] = "我的名字是许泽宇"
             }, cancellationToken: default);
-            var result = await _kernel.RunAsync(memoryFunctions["Retrieve"], new()
+            var result = await _kernel.InvokeAsync(memoryFunctions["Retrieve"], new()
             {
                 [TextMemoryPlugin.CollectionParam] = "Xzy",
                 [TextMemoryPlugin.KeyParam] = "info1"
@@ -154,7 +154,7 @@ namespace Xzy.SK.Api.Controllers
         public async Task<IActionResult> TextMemory3()
         {
             IMemoryStore memoryStore = new VolatileMemoryStore();
-            var embeddingGenerator = new AzureOpenAITextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
+            var embeddingGenerator = new AzureOpenAITextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
 
             SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
             await textMemory.SaveInformationAsync("Xzy", id: "info1", text: "我的名字是许泽宇", cancellationToken: default);
@@ -197,7 +197,7 @@ namespace Xzy.SK.Api.Controllers
         public async Task<IActionResult> TextMemory4()
         {
             IMemoryStore memoryStore = new VolatileMemoryStore();
-            var embeddingGenerator = new AzureOpenAITextEmbeddingGeneration("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
+            var embeddingGenerator = new AzureOpenAITextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key);
 
             SemanticTextMemory textMemory = new(memoryStore, embeddingGenerator);
 
@@ -207,14 +207,15 @@ namespace Xzy.SK.Api.Controllers
             await textMemory.SaveInformationAsync("Xzy", id: "info4", text: "我擅长.Net Core、微服务、云原生、AI", cancellationToken: default);
             await textMemory.SaveInformationAsync("Xzy", id: "info5", text: "我住在武汉", cancellationToken: default);
             var memoryPlugin = new TextMemoryPlugin(textMemory);
-            var memoryFunctions = _kernel.ImportFunctions(memoryPlugin);
-            var aboutMeOracle = _kernel.CreateSemanticFunction(RecallFunctionDefinition, requestSettings: new OpenAIRequestSettings() { MaxTokens = 100 });
+            var memoryFunctions = _kernel.ImportPluginFromObject(memoryPlugin);
+            var aboutMeOracle = _kernel.CreateFunctionFromPrompt(RecallFunctionDefinition,  new OpenAIPromptExecutionSettings() { MaxTokens = 100 });
 
-            var result = await _kernel.RunAsync(aboutMeOracle, new()
+            var result = await _kernel.InvokeAsync(aboutMeOracle, new KernelArguments()
             {
                 [TextMemoryPlugin.CollectionParam] = "Xzy",
                 [TextMemoryPlugin.RelevanceParam] = "0.79",
-                ["input"] = "我住在哪里?"
+                [TextMemoryPlugin.LimitParam] = "2",
+                [TextMemoryPlugin.InputParam] = "我住在哪里?"
             }, cancellationToken: default);
             return Ok(result.GetValue<string>());
         }

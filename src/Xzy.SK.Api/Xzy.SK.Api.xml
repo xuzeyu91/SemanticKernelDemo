@@ -52,13 +52,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Xzy.SK.Api.Controllers.OpenAIController.Translate(System.String)">
-            <summary>
-            OpenAi测试翻译，可以对比与SK写法差异
-            </summary>
-            <param name="input"></param>
-            <returns></returns>
-        </member>
         <member name="T:Xzy.SK.Api.Controllers.SKDemoController">
             <summary>
             SKDemo示例
@@ -137,7 +130,7 @@
             <param name="number"></param>
             <returns></returns>
         </member>
-        <member name="M:Xzy.SK.Api.plugins.MathPlugin.MathSK.Subtraction(Microsoft.SemanticKernel.Orchestration.SKContext)">
+        <member name="M:Xzy.SK.Api.plugins.MathPlugin.MathSK.Subtraction(System.Int32,System.Int32)">
             <summary>
             两个数相减
             </summary>

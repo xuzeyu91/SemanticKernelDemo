@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Orchestration;
 using Microsoft.SemanticKernel.Plugins.Core;
 using System;
 using System.Collections.Generic;
@@ -13,9 +12,9 @@ namespace Xzy.SK.Api.Controllers
     [ApiController]
     public class FunCoreDemoController : ControllerBase
     {
-        private readonly IKernel _kernel;
+        private readonly Kernel _kernel;
 
-        public FunCoreDemoController(IKernel kernel)
+        public FunCoreDemoController(Kernel kernel)
         {
             _kernel = kernel;
         }
@@ -132,25 +131,23 @@ Jane：这是一个4096个字符的Lorem Ipsum文本：
         [HttpPost]
         public async Task<IActionResult> ConversationSummary()
         {
-            IDictionary<string, ISKFunction> conversationSummaryPlugin = _kernel.ImportFunctions(new ConversationSummaryPlugin(_kernel));
+            KernelPlugin conversationSummaryPlugin = _kernel.ImportPluginFromType<ConversationSummaryPlugin>();
 
-            KernelResult summary = await _kernel.RunAsync(
-                 ChatTranscript,
-                 conversationSummaryPlugin["SummarizeConversation"]);
+            FunctionResult summary = await _kernel.InvokeAsync(
+                 conversationSummaryPlugin["SummarizeConversation"],new KernelArguments() { ["input"]= ChatTranscript });
 
             Console.WriteLine("SummarizeConversation:");
             Console.WriteLine(summary.GetValue<string>());
 
-            summary = await _kernel.RunAsync(
-                ChatTranscript,
-                conversationSummaryPlugin["GetConversationActionItems"]);
+            summary = await _kernel.InvokeAsync(
+                 conversationSummaryPlugin["SummarizeConversation"], new KernelArguments() { ["input"] = ChatTranscript });
 
             Console.WriteLine("GetConversationActionItems:");
             Console.WriteLine(summary.GetValue<string>());
 
-            summary = await _kernel.RunAsync(
-               ChatTranscript,
-               conversationSummaryPlugin["GetConversationTopics"]);
+            summary = await _kernel.InvokeAsync(
+                 conversationSummaryPlugin["SummarizeConversation"], new KernelArguments() { ["input"] = ChatTranscript });
+
             Console.WriteLine("GetConversationTopics:");
             Console.WriteLine(summary.GetValue<string>());
             return Ok();

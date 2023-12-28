@@ -79,14 +79,13 @@ namespace Xzy.SK
 
         private static void InitSK(IServiceCollection services)
         {
-            services.AddTransient<IKernel>((serviceProvider) =>
+            services.AddTransient<Kernel>((serviceProvider) =>
             {
-                return Kernel.Builder
-                .WithAzureOpenAIChatCompletionService(
+                return Kernel.CreateBuilder()
+                .AddAzureOpenAIChatCompletion(
                      OpenAIOptions.Model,
                      OpenAIOptions.Endpoint,
                      OpenAIOptions.Key)
-                .WithAzureOpenAITextEmbeddingGenerationService("text-embedding-ada-002", OpenAIOptions.Endpoint, OpenAIOptions.Key)
                 .Build();
             });
         }

@@ -192,6 +192,50 @@
             <param name="message"></param>
             <returns></returns>
         </member>
+        <member name="M:Xzy.SK.Domain.Common.SK.KernelFunctionCombinators.InvokePipelineAsync(System.Collections.Generic.IEnumerable{Microsoft.SemanticKernel.KernelFunction},Microsoft.SemanticKernel.Kernel,Microsoft.SemanticKernel.KernelArguments,System.Threading.CancellationToken)">
+            <summary>
+            Invokes a pipeline of functions, running each in order and passing the output from one as the first argument to the next.
+            </summary>
+            <param name="functions">The pipeline of functions to invoke.</param>
+            <param name="kernel">The kernel to use for the operations.</param>
+            <param name="arguments">The arguments.</param>
+            <param name="cancellationToken">The cancellation token to monitor for a cancellation request.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.SK.KernelFunctionCombinators.InvokePipelineAsync(System.Collections.Generic.IEnumerable{System.ValueTuple{Microsoft.SemanticKernel.KernelFunction,System.String}},Microsoft.SemanticKernel.Kernel,Microsoft.SemanticKernel.KernelArguments,System.Threading.CancellationToken)">
+            <summary>
+            Invokes a pipeline of functions, running each in order and passing the output from one as the named argument to the next.
+            </summary>
+            <param name="functions">The sequence of functions to invoke, along with the name of the argument to assign to the result of the function's invocation.</param>
+            <param name="kernel">The kernel to use for the operations.</param>
+            <param name="arguments">The arguments.</param>
+            <param name="cancellationToken">The cancellation token to monitor for a cancellation request.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.SK.KernelFunctionCombinators.Pipe(System.Collections.Generic.IEnumerable{Microsoft.SemanticKernel.KernelFunction},System.String,System.String)">
+            <summary>
+            Creates a function whose invocation will invoke each of the supplied functions in sequence.
+            </summary>
+            <param name="functions">The pipeline of functions to invoke.</param>
+            <param name="functionName">The name of the combined operation.</param>
+            <param name="description">The description of the combined operation.</param>
+            <returns>The result of the final function.</returns>
+            <remarks>
+            The result from one function will be fed into the first argument of the next function.
+            </remarks>
+        </member>
+        <member name="M:Xzy.SK.Domain.Common.SK.KernelFunctionCombinators.Pipe(System.Collections.Generic.IEnumerable{System.ValueTuple{Microsoft.SemanticKernel.KernelFunction,System.String}},System.String,System.String)">
+            <summary>
+            Creates a function whose invocation will invoke each of the supplied functions in sequence.
+            </summary>
+            <param name="functions">The pipeline of functions to invoke, along with the name of the argument to assign to the result of the function's invocation.</param>
+            <param name="functionName">The name of the combined operation.</param>
+            <param name="description">The description of the combined operation.</param>
+            <returns>The result of the final function.</returns>
+            <remarks>
+            The result from one function will be fed into the first argument of the next function.
+            </remarks>
+        </member>
         <member name="M:Xzy.SK.Domain.SugarExtensions.Where``1(SqlSugar.ISugarQueryable{``0},System.Collections.Generic.List{Xzy.SK.Domain.Condition})">
             <summary>
             兼容旧的查询参数(尽量使用新的语法,参照下面的Url地址)
@@ -561,6 +605,12 @@
             <summary>
             sqlserver连接
             </summary>
+        </member>
+        <member name="M:RepoUtils.RepoFiles.SamplePluginsPath">
+            <summary>
+            Scan the local folders from the repo, looking for "samples/plugins" folder.
+            </summary>
+            <returns>The full path to samples/plugins</returns>
         </member>
     </members>
 </doc>

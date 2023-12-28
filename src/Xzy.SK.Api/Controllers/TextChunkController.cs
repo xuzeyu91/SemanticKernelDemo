@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
-using Microsoft.SemanticKernel.Orchestration;
 using Microsoft.SemanticKernel.Plugins.Core;
 using Microsoft.SemanticKernel.Text;
 using System.Collections.Generic;
@@ -15,9 +13,9 @@ namespace Xzy.SK.Api.Controllers
     [ApiController]
     public class TextChunkController : ControllerBase
     {
-        private readonly IKernel _kernel;
+        private readonly Kernel _kernel;
 
-        public TextChunkController(IKernel kernel)
+        public TextChunkController(Kernel kernel)
         {
             _kernel = kernel;
         }

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Plugins.Core;
-using Microsoft.SemanticKernel.TemplateEngine.Basic;
+
 using System;
 using System.Threading.Tasks;
 
@@ -13,9 +13,9 @@ namespace Xzy.SK.Api.Controllers
     [ApiController]
     public class TemplateController : ControllerBase
     {
-        private readonly IKernel _kernel;
+        private readonly Kernel _kernel;
 
-        public TemplateController(IKernel kernel)
+        public TemplateController(Kernel kernel)
         {
             _kernel = kernel;
         }
@@ -23,7 +23,7 @@ namespace Xzy.SK.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTemplate()
         {
-            _kernel.ImportFunctions(new TimePlugin(), "time");
+            _kernel.ImportPluginFromObject(new TimePlugin(), "time");
 
             const string FunctionDefinition = @"
 今天是： {{time.Date}}
@@ -34,13 +34,15 @@ namespace Xzy.SK.Api.Controllers
 是周末时间吗（周末/不是周末）？
 ";
 
-            var promptRenderer = new BasicPromptTemplateEngine();
-            var renderedPrompt = await promptRenderer.RenderAsync(FunctionDefinition, _kernel.CreateNewContext());
+            var promptTemplateFactory = new KernelPromptTemplateFactory();
+            var promptTemplate = promptTemplateFactory.Create(new PromptTemplateConfig(FunctionDefinition));
+            var renderedPrompt = await promptTemplate.RenderAsync(_kernel);
 
-            var kindOfDay = _kernel.CreateSemanticFunction(FunctionDefinition, requestSettings: new OpenAIRequestSettings() { MaxTokens = 100 });
+            var kindOfDay = _kernel.CreateFunctionFromPrompt(FunctionDefinition, new OpenAIPromptExecutionSettings() { MaxTokens = 100 });
 
-            var result = await _kernel.RunAsync(kindOfDay);
-
+            // Show the result
+            Console.WriteLine("--- Prompt Function result");
+            var result = await _kernel.InvokeAsync(kindOfDay);
             return Ok(result.GetValue<string>());
         }
     }

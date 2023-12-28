@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using System.Threading.Tasks;
-using Microsoft.SemanticKernel.TemplateEngine.Basic;
-using Microsoft.SemanticKernel.Orchestration;
-using Newtonsoft.Json;
-using Microsoft.SemanticKernel.Plugins.Core;
+
 
 namespace Xzy.SK.Api.Controllers
 {
@@ -14,9 +11,9 @@ namespace Xzy.SK.Api.Controllers
     [ApiController]
     public class MsgContextController : ControllerBase
     {
-        private readonly IKernel _kernel;
+        private readonly Kernel _kernel;
 
-        public MsgContextController(IKernel kernel)
+        public MsgContextController(Kernel kernel)
         {
             _kernel = kernel;
         }
@@ -35,16 +32,16 @@ namespace Xzy.SK.Api.Controllers
 {history}
 User: {input}";
 
-            var promptRenderer = new BasicPromptTemplateEngine();
-            var renderedPrompt = await promptRenderer.RenderAsync(FunctionDefinition, _kernel.CreateNewContext());
+            var promptRenderer = new KernelPromptTemplateFactory();
+            var renderedPrompt = promptRenderer.Create(new PromptTemplateConfig(FunctionDefinition));
 
-            var test = _kernel.CreateSemanticFunction(FunctionDefinition, requestSettings: new OpenAIRequestSettings() { MaxTokens = 100 });
-            var contextVariables = new ContextVariables
+            var test = _kernel.CreateFunctionFromPrompt(FunctionDefinition,  new OpenAIPromptExecutionSettings() { MaxTokens = 100 });
+            KernelArguments KernelArguments = new ()
             {
                 ["$history"] = history,
                 ["$input"] = input
             };
-            var result = await _kernel.RunAsync(contextVariables, test);
+            var result = await _kernel.InvokeAsync(test, KernelArguments);
 
             return Ok(result.GetValue<string>());
         }

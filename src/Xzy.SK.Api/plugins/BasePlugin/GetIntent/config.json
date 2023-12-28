@@ -17,11 +17,6 @@
         "defaultValue": ""
       },
       {
-        "name": "history",
-        "description": "对话的历史。",
-        "defaultValue": ""
-      },
-      {
         "name": "options",
         "description": "可供选择的选项。",
         "defaultValue": ""
