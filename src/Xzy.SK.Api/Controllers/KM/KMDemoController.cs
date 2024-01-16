@@ -44,5 +44,36 @@ namespace Xzy.SK.Api.Controllers.KM
 
             return Ok(answer.Result);
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> TestFile(IFormFile file,string question)
+        {
+            var forms = await Request.ReadFormAsync();
+            using (var stream = forms.Files[0].OpenReadStream())
+            {
+                var handler = new OpenAIHttpClientHandler();
+                var memory = new KernelMemoryBuilder()
+                  .WithOpenAITextGeneration(new OpenAIConfig()
+                  {
+                      APIKey = OpenAIOptions.Key,
+                      TextModel = OpenAIOptions.Model,
+
+                  }, null, new HttpClient(handler))
+                  .WithOpenAITextEmbeddingGeneration(new OpenAIConfig()
+                  {
+                      APIKey = OpenAIOptions.Key,
+                      EmbeddingModel = "text-embedding-ada-002",
+
+                  }, null, false, new HttpClient(handler))
+                  .Build<MemoryServerless>();
+
+                await memory.ImportDocumentAsync(stream, forms.Files[0].FileName);
+
+                var answer = await memory.AskAsync(question);
+
+                return Ok(answer.Result);
+            }
+        }
     }
 }
