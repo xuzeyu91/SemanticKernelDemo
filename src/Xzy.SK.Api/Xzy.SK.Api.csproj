@@ -92,6 +92,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\KM\" />
     <Folder Include="plugins\Calculate\Multiplication\" />
   </ItemGroup>
 
