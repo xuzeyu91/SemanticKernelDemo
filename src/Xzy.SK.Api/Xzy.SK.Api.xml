@@ -4,6 +4,9 @@
         <name>Xzy.SK.Api</name>
     </assembly>
     <members>
+        <member name="M:Xzy.SK.Api.Controllers.KM.KMDemoController.Test(System.String)">
+            <returns></returns>
+        </member>
         <member name="M:Xzy.SK.Api.Controllers.FunCoreDemoController.ConversationSummary">
             <summary>
             会话总结，标签提取

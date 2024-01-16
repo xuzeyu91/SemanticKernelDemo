@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +26,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="doc\file1-Wikipedia-Carbon.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="doc\file2-Wikipedia-Moon.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="doc\file3-lorem-ipsum.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="doc\file4-SK-Readme.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="doc\file5-NASA-news.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="plugins\BasePlugin\GetIntent\skprompt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -92,7 +107,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\KM\" />
     <Folder Include="plugins\Calculate\Multiplication\" />
   </ItemGroup>
 

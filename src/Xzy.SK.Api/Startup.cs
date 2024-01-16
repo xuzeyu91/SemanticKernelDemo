@@ -21,6 +21,7 @@ using System.Text.Unicode;
 using Xzy.SK.Domain.Common.Utils;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Plugins.Memory;
+using System.Net.Http;
 
 namespace Xzy.SK
 {
@@ -79,13 +80,15 @@ namespace Xzy.SK
 
         private static void InitSK(IServiceCollection services)
         {
+            var handler = new OpenAIHttpClientHandler();
             services.AddTransient<Kernel>((serviceProvider) =>
             {
                 return Kernel.CreateBuilder()
-                .AddAzureOpenAIChatCompletion(
-                     OpenAIOptions.Model,
-                     OpenAIOptions.Endpoint,
-                     OpenAIOptions.Key)
+                .AddOpenAIChatCompletion(
+                  modelId: OpenAIOptions.Model,
+                  apiKey: OpenAIOptions.Key,
+                  httpClient: new HttpClient(handler)
+                     )
                 .Build();
             });
         }
