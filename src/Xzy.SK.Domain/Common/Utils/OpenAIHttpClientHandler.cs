@@ -19,8 +19,8 @@ namespace Xzy.SK.Domain.Common.Utils
                     uriBuilder = new UriBuilder(request.RequestUri)
                     {
                         // 这里是你要修改的 URL
-                        Scheme = "https://ipsapro.isoftstone.com/",
-                        Host = "ipsapro.isoftstone.com",
+                        Scheme = "",
+                        Host = "",
                         Path = "oneapi/v1/chat/completions",
                     };
                     request.RequestUri = uriBuilder.Uri;
@@ -29,8 +29,8 @@ namespace Xzy.SK.Domain.Common.Utils
                     uriBuilder = new UriBuilder(request.RequestUri)
                     {
                         // 这里是你要修改的 URL
-                        Scheme = "https://ipsapro.isoftstone.com/",
-                        Host = "ipsapro.isoftstone.com",
+                        Scheme = "",
+                        Host = "",
                         Path = "oneapi/v1/embeddings",
                     };
                     request.RequestUri = uriBuilder.Uri;
