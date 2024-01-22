@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Xzy.SK.Domain.Common.Options;
 
 namespace Xzy.SK.Domain.Common.Utils
 {
@@ -13,29 +15,38 @@ namespace Xzy.SK.Domain.Common.Utils
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             UriBuilder uriBuilder;
-            switch (request.RequestUri.LocalPath)
+            Regex regex = new Regex(@"(https?)://([^/]+)/(.*)");
+            Match match = regex.Match(OpenAIOptions.Endpoint);
+            string xieyi = match.Groups[1].Value;
+            string host = match.Groups[2].Value;
+            string route = match.Groups[3].Value;
+            if (match.Success)
             {
-                case "/v1/chat/completions":
-                    uriBuilder = new UriBuilder(request.RequestUri)
-                    {
-                        // 这里是你要修改的 URL
-                        Scheme = "",
-                        Host = "",
-                        Path = "oneapi/v1/chat/completions",
-                    };
-                    request.RequestUri = uriBuilder.Uri;
-                    break;
-                case "/v1/embeddings":
-                    uriBuilder = new UriBuilder(request.RequestUri)
-                    {
-                        // 这里是你要修改的 URL
-                        Scheme = "",
-                        Host = "",
-                        Path = "oneapi/v1/embeddings",
-                    };
-                    request.RequestUri = uriBuilder.Uri;
+                switch (request.RequestUri.LocalPath)
+                {
+                    case "/v1/chat/completions":
+                        //替换代理
+                        uriBuilder = new UriBuilder(request.RequestUri)
+                        {
+                            // 这里是你要修改的 URL
+                            Scheme = $"{xieyi}://{host}/",
+                            Host = host,
+                            Path = route + "v1/chat/completions",
+                        };
+                        request.RequestUri = uriBuilder.Uri;
 
-                    break;
+                        break;
+                    case "/v1/embeddings":
+                        uriBuilder = new UriBuilder(request.RequestUri)
+                        {
+                            // 这里是你要修改的 URL
+                            Scheme = $"{xieyi}://{host}/",
+                            Host = host,
+                            Path = route + "v1/embeddings",
+                        };
+                        request.RequestUri = uriBuilder.Uri;
+                        break;
+                }
             }
 
             // 接着，调用基类的 SendAsync 方法将你的修改后的请求发出去
