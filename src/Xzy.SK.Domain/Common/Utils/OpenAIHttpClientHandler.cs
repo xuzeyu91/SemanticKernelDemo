@@ -13,11 +13,6 @@ namespace Xzy.SK.Domain.Common.Utils
     public class OpenAIHttpClientHandler : HttpClientHandler
     {
 
-        public OpenAIHttpClientHandler()
-        {
- 
-        }
-
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             UriBuilder uriBuilder;
