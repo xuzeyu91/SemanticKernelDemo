@@ -329,3 +329,4 @@ ASALocalRun/
 .mfractor/
 /src/Xzy.SK.Api/appsettings.Development.json
 .vs
+/.semantic-kernel/results/src/Xzy.SK.Api/plugins/Translate
