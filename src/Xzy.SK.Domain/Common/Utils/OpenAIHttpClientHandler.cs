@@ -12,16 +12,29 @@ namespace Xzy.SK.Domain.Common.Utils
 {
     public class OpenAIHttpClientHandler : HttpClientHandler
     {
+
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             UriBuilder uriBuilder;
-            Regex regex = new Regex(@"(https?)://([^/]+)/(.*)");
+            Regex regex = new Regex(@"(https?)://([^/:]+)(:\d+)?/(.*)");
             Match match = regex.Match(OpenAIOptions.Endpoint);
-            string xieyi = match.Groups[1].Value;
-            string host = match.Groups[2].Value;
-            string route = match.Groups[3].Value;
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" && request.Content != null)
+            {
+                string requestBody = await request.Content.ReadAsStringAsync();
+                //便于调试查看请求prompt
+                Console.WriteLine(requestBody);
+            }
             if (match.Success)
             {
+                string xieyi = match.Groups[1].Value;
+                string host = match.Groups[2].Value;
+                string port = match.Groups[3].Value; // 可选的端口号
+                string route = match.Groups[4].Value;
+                // 如果port不为空，它将包含冒号，所以你可能需要去除它
+                port = string.IsNullOrEmpty(port) ? port : port.Substring(1);
+                // 拼接host和端口号
+                var hostnew = string.IsNullOrEmpty(port) ? host : $"{host}:{port}";
+
                 switch (request.RequestUri.LocalPath)
                 {
                     case "/v1/chat/completions":
@@ -29,10 +42,15 @@ namespace Xzy.SK.Domain.Common.Utils
                         uriBuilder = new UriBuilder(request.RequestUri)
                         {
                             // 这里是你要修改的 URL
-                            Scheme = $"{xieyi}://{host}/",
+                            Scheme = $"{xieyi}://{hostnew}/",
                             Host = host,
                             Path = route + "v1/chat/completions",
                         };
+                        if (port.ConvertToInt32() != 0)
+                        {
+                            uriBuilder.Port = port.ConvertToInt32();
+                        }
+
                         request.RequestUri = uriBuilder.Uri;
 
                         break;
@@ -44,6 +62,10 @@ namespace Xzy.SK.Domain.Common.Utils
                             Host = host,
                             Path = route + "v1/embeddings",
                         };
+                        if (port.ConvertToInt32() != 0)
+                        {
+                            uriBuilder.Port = port.ConvertToInt32();
+                        }
                         request.RequestUri = uriBuilder.Uri;
                         break;
                 }
@@ -55,4 +77,5 @@ namespace Xzy.SK.Domain.Common.Utils
             return response;
         }
     }
+
 }
