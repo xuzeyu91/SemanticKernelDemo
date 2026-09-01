@@ -26,20 +26,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.1.0" />
+    <!-- 15.1.1 已被作者 unlist，15.1.3 为 15.x 最新补丁版（同在告警 ~>15.1.1 范围内） -->
+    <PackageReference Include="AutoMapper" Version="15.1.3" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
+    <!-- AutoMapper 15 依赖 Microsoft.Extensions.* >= 10.0.0，低于该版本会触发 NU1605 降级错误 -->
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.0" />
     <PackageReference Include="Microsoft.KernelMemory.Core" Version="0.35.240321.1" />
-    <PackageReference Include="Microsoft.SemanticKernel" Version="1.7.1" />
-    <PackageReference Include="Microsoft.SemanticKernel.Core" Version="1.7.1" />
-    <PackageReference Include="Microsoft.SemanticKernel.Planners.Handlebars" Version="1.7.1-preview" />
-    <PackageReference Include="Microsoft.SemanticKernel.Planners.OpenAI" Version="1.7.1-preview" />
-    <PackageReference Include="Microsoft.SemanticKernel.Plugins.Core" Version="1.7.1-alpha" />
-    <PackageReference Include="Microsoft.SemanticKernel.Plugins.Memory" Version="1.7.1-alpha" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.71.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Core" Version="1.71.0" />
+    <!-- Handlebars/OpenAI Planner 包已下线（最后一版 1.47.0-preview），计划能力改用 Function Calling，见 SKDemoController.Plan -->
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.Core" Version="1.71.0-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Plugins.Memory" Version="1.71.0-alpha" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NPOI" Version="2.6.2" />
     <PackageReference Include="Polly" Version="8.0.0" />
-    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="RestSharp" Version="112.0.0" />
     <PackageReference Include="SqlSugarCore" Version="5.1.4.152" />
   </ItemGroup>
 

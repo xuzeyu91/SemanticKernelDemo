@@ -140,13 +140,13 @@ Jane：这是一个4096个字符的Lorem Ipsum文本：
             Console.WriteLine(summary.GetValue<string>());
 
             summary = await _kernel.InvokeAsync(
-                 conversationSummaryPlugin["SummarizeConversation"], new KernelArguments() { ["input"] = ChatTranscript });
+                 conversationSummaryPlugin["GetConversationActionItems"], new KernelArguments() { ["input"] = ChatTranscript });
 
             Console.WriteLine("GetConversationActionItems:");
             Console.WriteLine(summary.GetValue<string>());
 
             summary = await _kernel.InvokeAsync(
-                 conversationSummaryPlugin["SummarizeConversation"], new KernelArguments() { ["input"] = ChatTranscript });
+                 conversationSummaryPlugin["GetConversationTopics"], new KernelArguments() { ["input"] = ChatTranscript });
 
             Console.WriteLine("GetConversationTopics:");
             Console.WriteLine(summary.GetValue<string>());

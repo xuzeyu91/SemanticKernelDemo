@@ -1,8 +1,7 @@
-﻿using Humanizer;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Planning.Handlebars;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Plugins.Core;
 using Newtonsoft.Json;
 using RepoUtils;
@@ -143,21 +142,19 @@ namespace Xzy.SK.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Plan(string msg)
         {
-            var planner = new HandlebarsPlanner(
-                new HandlebarsPlannerOptions()
-                {
-                    // Change this if you want to test with loops regardless of model selection.
-                    AllowLoops = true
-                });
-            var calculatePlugin = _kernel
+            //HandlebarsPlanner 已随 Microsoft.SemanticKernel.Planners.Handlebars 包下线（最后一版 1.47.0-preview），
+            //官方推荐改用 Function Calling（自动函数调用）完成计划编排
+            _kernel
                 .ImportPluginFromPromptDirectory(Path.Combine(RepoFiles.SamplePluginsPath(), "Calculate"));
 
-            var plan = await planner.CreatePlanAsync(_kernel,msg);
-            Console.WriteLine("Plan:\n");
-            Console.WriteLine(JsonConvert.SerializeObject(plan));
+            var plan = _kernel.CreateFunctionFromPrompt(msg, new OpenAIPromptExecutionSettings
+            {
+                //由模型自行选择并调用 Calculate 插件中的函数
+                FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
+            });
 
-            var result = await plan.InvokeAsync(_kernel);
-            return Ok(result);
+            var result = await _kernel.InvokeAsync(plan);
+            return Ok(result.GetValue<string>());
         }
 
         /// <summary>

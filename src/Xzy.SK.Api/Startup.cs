@@ -58,8 +58,8 @@ namespace Xzy.SK
 
             //swagger
             InitSwagger(services);
-            //Mapper
-            services.AddMapper();
+            //Mapper（AutoMapper 15 需要 LicenseKey，读取配置 AutoMapper:LicenseKey）
+            services.AddMapper(Configuration["AutoMapper:LicenseKey"]);
 
             //允许跨域
             services.AddCors(options => options.AddPolicy(Any,
